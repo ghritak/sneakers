@@ -35,7 +35,7 @@
       "CAMERA_ROLL"
     ],
     "plugins": [
-      "expo-localization"
+      "expo-localization", "@react-native-firebase/app", "@react-native-firebase/auth"
     ]
   }
 }

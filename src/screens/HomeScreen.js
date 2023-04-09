@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
+import { UserContext } from '../User_Context';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, SafeAreaView, StatusBar } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
+import { IconButton } from 'react-native-paper';
 import products from '../data/products';
-const width = Dimensions.get('window').width / 2 - 30;
+const width = Dimensions.get('window').width / 2 - 20;
 
 const HomeScreen = ({ navigation }) => {
+
+  // useEffect(() => {
+  //   SplashScreen.show(navigation);
+  // }, []);
 
   const Card = ({ products }) => {
     return (
@@ -13,9 +19,9 @@ const HomeScreen = ({ navigation }) => {
         style={[style.card, (products.brand === 'NIKE') ? style.nike : style.adidas]}
 
         activeOpacity={0.5}
-        onPress={() => navigation.navigate('Details', products)}>
+        onPress={() => navigation.navigate('Detailstack', products)}>
 
-        <View style={{ height: 210, alignItems: 'center' }}>
+        <View style={{ height: 210, width: 144, alignItems: 'center' }}>
           <Image
             source={products.img1}
             style={{ height: 180, width: 144, flex: 1, resizeMode: 'contain' }}
@@ -47,24 +53,24 @@ const HomeScreen = ({ navigation }) => {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => navigation.navigate('Details', products)}
-        style={{ marginTop: 30, backgroundColor: "#FFF", height: 250, width: 200, zIndex: 2, borderRadius: 10, padding: 15, marginRight: 10, marginBottom: 5 }}>
+        onPress={() => navigation.navigate('Detailstack', products)}
+        style={{ marginTop: 30, backgroundColor: "#FFF", height: 250, width: 200, zIndex: 2, borderRadius: 10, padding: 10, marginBottom: 5 }}>
         <Image
           source={products.img1}
           style={{ width: 170, height: 140, borderRadius: 10 }}
         />
-        <View style={{ flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
+        <View style={{ flexDirection: "row", marginVertical: 10 }}>
           <Text style={{ fontWeight: "bold", color: "#4f4a4a", fontSize: 12, width: '70%' }}>
             {products.name}
           </Text>
-          <View style={{ height: 4, width: 4, borderRadius: 4, backgroundColor: "red", marginHorizontal: 4 }}></View>
-          <Text style={{ color: "red", fontSize: 9, fontWeight: "bold" }}>
+          <View style={{ height: 4, width: 4, borderRadius: 4, backgroundColor: "red", marginHorizontal: 4, marginTop: 7 }} />
+          <Text style={{ color: "red", fontSize: 9, fontWeight: "bold", marginTop: 3 }}>
             New
           </Text>
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
-          <View style={{ width: "80%" }}>
+          <View style={{ width: "73%" }}>
             <Text style={{ fontSize: 15, fontWeight: "bold" }}>
               {products.price} {'\u20B9'}
             </Text>
@@ -78,39 +84,37 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
+  const { user } = useContext(UserContext);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-      {/* <View>
-        <StatusBar showHideTransition barStyle="dark-content" />
+      <View>
+        <StatusBar showHideTransition barStyle="dark-content" backgroundColor='white' />
         <View>
           <StatusBar hidden={false} />
         </View>
+      </View>
+
+      {/* <View style={{ marginTop: 50 }}>
+        <Text>{user ? user.displayName : 'guest'}</Text>
       </View> */}
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, paddingHorizontal: 25, backgroundColor: '#fff', paddingTop: 30 }}>
 
-        <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-          <View style={{ width: "85%", paddingLeft: 10 }}>
-            <Text style={{ fontWeight: "bold", fontSize: 22 }}>
-              SNEAKERS
-            </Text>
-          </View>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Bag')}
-            style={{ marginRight: 0 }}
-            activeOpacity={0.5}>
-            <MaterialIcons name="shopping-cart" size={25} />
-          </TouchableOpacity>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, paddingHorizontal: 10, backgroundColor: '#fff', paddingTop: 20 }}>
+        <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
+          <Text style={{ fontWeight: "bold", fontSize: 22, marginLeft: 10 }}>
+            SNEAKERS
+          </Text>
+          <IconButton
+            icon={() => <MaterialIcons name="shopping-cart" size={25} color="black" />}
+            size={25}
+            style={{ margin: 0 }}
+            onPress={() => navigation.navigate('Bagstack')}
+          />
         </View>
 
 
-        <TouchableOpacity onPress={() => { navigation.navigate('SearchTab'); }} style={{ flexDirection: "row", alignItems: "center", width: "100%", marginVertical: 30, backgroundColor: "#eceef19e", paddingLeft: 15, height: 45, borderRadius: 5, marginLeft: 1 }}>
+        <TouchableOpacity onPress={() => { navigation.navigate('Search'); }} style={{ flexDirection: "row", alignItems: "center", width: "100%", marginVertical: 30, backgroundColor: "#eceef19e", paddingLeft: 15, height: 45, borderRadius: 5, marginLeft: 1 }}>
           <MaterialIcons name="search" size={23} color="#4f4a4a" />
-          {/* <TextInput
-            onPress={clicked}
-            placeholder="Search Sneakers ..."
-            style={{ paddingLeft: 10, fontSize: 14, width: '100%' }}
-          /> */}
           <View style={{ paddingLeft: 10, fontSize: 14, width: '100%' }}>
             <Text style={{ color: "#848282" }}>Search Sneakers...</Text>
           </View>
@@ -127,9 +131,11 @@ const HomeScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {products.map((item, i) => <New key={i} products={item} />)}
-        </ScrollView>
+        <View style={{ justifyContent: 'center' }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {products.map((item, i) => <New key={i} products={item} />)}
+          </ScrollView>
+        </View>
 
         <Text style={{ marginTop: 10, color: "#4f4a4a", fontSize: 18, fontWeight: "bold" }}>
           Best Selling
@@ -142,25 +148,6 @@ const HomeScreen = ({ navigation }) => {
         <View style={{ marginBottom: 100 }}></View>
 
       </ScrollView>
-
-      {/* <View style={{}} activeOpacity={0.8}>
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: "#eeeeee", justifyContent: 'center', borderTopLeftRadius: 50, borderTopRightRadius: 50, padding: 15, marginHorizontal: 20 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <TouchableOpacity style={{ paddingHorizontal: 20 }}>
-              <MaterialIcons name='home' color='grey' size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity style={{ paddingHorizontal: 20 }}>
-              <MaterialIcons name='search' color='black' size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Bookmark')} style={{ paddingHorizontal: 20 }}>
-              <MaterialIcons name='bookmark' color='black' size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Account')} style={{ paddingHorizontal: 20 }}>
-              <MaterialIcons name='person' color='black' size={30} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View> */}
     </SafeAreaView >
   );
 };
@@ -170,7 +157,7 @@ const style = StyleSheet.create({
     height: 225,
     backgroundColor: '#f6f6f6',
     width,
-    marginHorizontal: 2,
+    marginHorizontal: 5,
     borderRadius: 10,
     marginBottom: 80,
     padding: 15,

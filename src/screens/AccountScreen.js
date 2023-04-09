@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Modal, View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, StatusBar, Dimensions, Animated } from 'react-native';
+import { Alert, Modal, View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, StatusBar, Animated } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
+import { Button } from 'react-native-elements';
 import { MaterialIcons, Octicons, Ionicons } from '@expo/vector-icons';
 // const { width, height } = Dimensions.get('window');
 const scaleValue = new Animated.Value(0);
@@ -112,10 +113,19 @@ const AccountScreen = ({ navigation }) => {
                         <Text style={{ fontSize: 25, fontWeight: '600', marginTop: 20 }}>{name}</Text>
                         <Text style={{ fontSize: 15, marginTop: 7 }}>{email}</Text>
                         <Text style={{ fontSize: 15, marginTop: 7 }}>+91 7002031369</Text>
-                        <TouchableOpacity onPress={openModal} style={{ marginBottom: 20, flexDirection: 'row', backgroundColor: '#eceef0', paddingVertical: 10, paddingHorizontal: 15, borderRadius: 5, marginTop: 12 }}>
+                        {/* <TouchableOpacity onPress={openModal} style={{ marginBottom: 20, flexDirection: 'row', backgroundColor: '#eceef0', paddingVertical: 10, paddingHorizontal: 15, borderRadius: 5, marginTop: 12 }}>
                             <Text style={{ fontSize: 12 }}>EDIT PROFILE</Text>
                             <MaterialIcons size={15} style={{ justifyContent: 'center', marginLeft: 3 }} name='edit' />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <View style={{ marginTop: 20, marginBottom: 12 }}>
+                            <Button onPress={openModal}
+                                title='EDIT PROFILE  '
+                                buttonStyle={{ backgroundColor: '#eceef0', color: 'black', borderRadius: 5, padding: 10 }}
+                                titleStyle={{ color: 'black', fontSize: 12 }}
+                                icon={<MaterialIcons size={15} name='edit' color='black' />}
+                                iconRight
+                            />
+                        </View>
                     </View>
                 </View>
 
@@ -143,16 +153,16 @@ const AccountScreen = ({ navigation }) => {
                                         </View>
                                     </View>
                                     <View style={{ justifyContent: 'center', flexDirection: 'row', marginVertical: 25 }}>
-                                        <TouchableOpacity style={{ backgroundColor: '#eceef19e', borderWidth: 1, borderRadius: 10, justifyContent: 'center', paddingVertical: 10, flexDirection: 'row', width: '60%' }}>
-                                            <Text>Change Password</Text>
-                                        </TouchableOpacity>
+                                        <Button onPress={saveModal}
+                                            buttonStyle={{ backgroundColor: '#eceef19e', borderWidth: 1, borderRadius: 5, borderColor: 'black', justifyContent: 'center', paddingVertical: 10, }}
+                                            title="Change Password" titleStyle={{ color: 'black', fontSize: 12 }} />
                                     </View>
-                                    <TouchableOpacity onPress={saveModal} style={{ justifyContent: 'center', paddingVertical: 15, flexDirection: 'row', backgroundColor: 'black', borderRadius: 10 }}>
-                                        <Text style={{ fontSize: 16, color: 'white' }}>SAVE</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={closeModal} style={{ justifyContent: 'center', paddingVertical: 15, flexDirection: 'row', backgroundColor: '#3d4147', borderRadius: 10, marginTop: 15 }}>
-                                        <Text style={{ fontSize: 16, color: 'white' }}>CANCEL</Text>
-                                    </TouchableOpacity>
+                                    <Button onPress={saveModal}
+                                        buttonStyle={{ backgroundColor: 'black', borderRadius: 10, paddingVertical: 15 }}
+                                        title="SAVE " titleStyle={{ fontSize: 16 }} />
+                                    <Button onPress={closeModal}
+                                        buttonStyle={{ backgroundColor: '#3d4147', marginTop: 15, borderRadius: 10, paddingVertical: 15 }}
+                                        title="CANCEL " titleStyle={{ fontSize: 16 }} />
                                 </View>
                             </Animated.View>
 
@@ -263,14 +273,17 @@ const AccountScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ justifyContent: 'center', flexDirection: 'row', marginVertical: 30 }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('LogIn')} style={{ paddingVertical: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', borderRadius: 10, backgroundColor: '#000', width: '70%' }}>
-                        <Text style={{ color: 'white', fontSize: 20 }}>Log Out</Text>
-                        <Ionicons name='log-out-outline' color={'white'} style={{ marginLeft: 10 }} size={22} />
-                    </TouchableOpacity>
+                <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 30 }}>
+                    <Button onPress={() => navigation.navigate('Loginstack')}
+                        title='Log Out '
+                        buttonStyle={{ backgroundColor: 'black', color: 'black', height: 50, borderRadius: 10 }}
+                        containerStyle={{ width: '75%' }}
+                        icon={<Ionicons name='log-out-outline' color='white' size={20} />}
+                        iconRight
+                    />
                 </View>
 
-                <View style={{ marginBottom: 50, alignItems: 'center' }}>
+                <View style={{ marginVertical: 50, alignItems: 'center' }}>
                     <Text>App Version : 1.0.0</Text>
                 </View>
             </ScrollView>

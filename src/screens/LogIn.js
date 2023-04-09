@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, StatusBar } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { Button } from 'react-native-elements'; import AsyncStorage from '@react-native-async-storage/async-storage';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
+import { Button } from 'react-native-elements';
+import { IconButton } from 'react-native-paper';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from '@firebase/auth';
+import { auth } from '../firebaseConfig';
 
 
-const LogIn = ({ navigation }) => {
+const LogIn = () => {
 
     useEffect(() => {
         navigation.getParent()?.setOptions({
@@ -28,20 +30,52 @@ const LogIn = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [eye, setEye] = useState(true);
+    const [eyename, setEyeName] = useState('eye');
 
-    const handleLogin = () => {
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                console.log(user);
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-            });
-    }
+    const navigation = useNavigation();
+
+    const handleLogin = async () => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            if (user.emailVerified) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Home' }],
+                });
+            } else {
+                setErrorMessage('Please verify your email address to continue.');
+            }
+        } catch (error) {
+            if (error.code === 'auth/user-not-found') {
+                setErrorMessage('No user found with this email. please create an account.');
+            } else if (error.code == 'auth/invalid-email') {
+                setErrorMessage('Email is invalid, please enter correct email.');
+            } else if (error.code == 'auth/wrong-password') {
+                setErrorMessage('Incorrect password, please enter correct password.');
+            } else if (error.code == 'auth/internal-error') {
+                setErrorMessage('Please enter password.');
+            } else if (error.code == 'auth/too-many-requests') {
+                setErrorMessage('Too many incorrect attempts, please reset your password.');
+            } else {
+                setErrorMessage(error.code, error.message);
+            }
+        }
+    };
+
+    const showPassword = () => {
+        if (eye === true) {
+            setEye(false);
+            setEyeName('eye-off');
+        }
+        else if (eye === false) {
+            setEye(true);
+            setEyeName('eye');
+        }
+    };
+
 
 
     return (
@@ -60,7 +94,9 @@ const LogIn = ({ navigation }) => {
                     </View>
                     <View style={{ flexDirection: 'row', marginLeft: 50, marginTop: 25 }}>
                         <Text style={{ color: '#9b9b9b', fontWeight: '500' }}>If you are new / </Text>
-                        <Text style={{ fontWeight: '500' }} onPress={() => navigation.navigate('Register')}>Create New</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Registerstack')}>
+                            <Text style={{ fontWeight: '500' }} >Create New</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{ marginTop: 50 }}>
@@ -74,27 +110,46 @@ const LogIn = ({ navigation }) => {
                 <View style={{ width: '75%', marginBottom: 10 }}>
                     <TextInput
                         autoCapitalize="none"
-                        placeholder='Enter phone or email'
+                        placeholder='Email/ phone'
                         value={email} onChangeText={setEmail}
-                        style={{ borderRadius: 10, height: 50, fontWeight: "600", backgroundColor: '#f6f6f6', paddingHorizontal: 20, fontSize: 12 }}
+                        style={styles.input}
                     />
                 </View>
-                <View style={{ width: '75%' }}>
+                <View style={[styles.input, { width: '75%', flexDirection: 'row', alignItems: 'center' }]}>
                     <TextInput
                         placeholder='Password'
-                        secureTextEntry={true} value={password} onChangeText={setPassword}
-                        style={{ borderRadius: 10, height: 50, fontWeight: "600", backgroundColor: '#f6f6f6', paddingHorizontal: 20, fontSize: 12 }}
+                        secureTextEntry={eye} value={password} onChangeText={setPassword}
+                        style={{ width: '90%' }}
                     />
+                    {password !== '' ? (
+                        <IconButton
+                            icon={() => <MaterialCommunityIcons name={eyename} size={20} color="black" />}
+                            size={12}
+                            onPress={showPassword}
+                        />
+                    ) : null}
                 </View>
             </View>
 
-            <View style={{ flexDirection: 'row', marginLeft: 50, marginTop: 25, marginBottom: 50 }}>
+            <View style={{ flexDirection: 'row', marginLeft: 50, marginTop: 25, marginBottom: 30 }}>
                 <Text style={{ color: '#9b9b9b', fontWeight: '500' }}>Forgot password? / </Text>
-                <Text style={{ fontWeight: '500' }} onPress={() => navigation.navigate('Account')}>Reset</Text>
+                <TouchableOpacity onPress={() =>
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Account' }],
+                    })
+                }>
+                    <Text style={{ fontWeight: '500' }} >
+                        Reset</Text>
+                </TouchableOpacity>
             </View>
-
+            <View style={{ justifyContent: 'center', flexDirection: 'row', marginBottom: 20 }}>
+                {errorMessage ? <Text style={{ fontSize: 12, color: '#e60000' }}>{errorMessage}</Text> : null}
+            </View>
             <View style={{ alignItems: 'center' }}>
-                <Button onPress={handleLogin} title='Log In' buttonStyle={{ backgroundColor: '#000', color: 'black', height: 50, borderRadius: 10 }} containerStyle={{ width: '75%' }} />
+                <Button
+                    onPress={handleLogin}
+                    title='Log In' buttonStyle={{ backgroundColor: '#000', color: 'black', height: 50, borderRadius: 10 }} containerStyle={{ width: '75%' }} />
             </View>
 
             <View style={{ marginTop: 40, alignItems: 'center', marginBottom: 40 }}>
@@ -105,7 +160,7 @@ const LogIn = ({ navigation }) => {
                 </View>
             </View>
 
-            <TouchableOpacity style={google.google} activeOpacity={0.5}>
+            <TouchableOpacity style={styles.google} activeOpacity={0.5}>
                 <View style={{ justifyContent: 'center', marginLeft: 10 }}>
                     <Image
                         source={require('../images/google.png')}
@@ -117,16 +172,19 @@ const LogIn = ({ navigation }) => {
                 </View>
             </TouchableOpacity>
 
-            {/*
-    <View>
-                <Button  title={'Login with Google'} buttonStyle={{ backgroundColor: '#000', color: 'black', height: 50 }} containerStyle={{ width: '70%' }} />
-            </View>
-    */}
         </SafeAreaView>
     );
 };
 
-const google = StyleSheet.create({
+const styles = StyleSheet.create({
+    input: {
+        borderRadius: 10,
+        height: 50,
+        fontWeight: "400",
+        backgroundColor: '#f6f6f6',
+        paddingHorizontal: 20,
+        fontSize: 12,
+    },
     google: {
         alignItems: 'center',
         justifyContent: 'center',

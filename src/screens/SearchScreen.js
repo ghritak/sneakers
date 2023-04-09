@@ -2,8 +2,9 @@ import React, { useState, useRef } from "react";
 import { Text, View, Image, StatusBar, TextInput, Animated, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
+import { IconButton } from 'react-native-paper';
 import products from "../data/products";
-const width = Dimensions.get('window').width / 2 - 30;
+const width = Dimensions.get('window').width / 2 - 20;
 
 
 const SearchScreen = ({ navigation }) => {
@@ -45,7 +46,7 @@ const SearchScreen = ({ navigation }) => {
                 style={[styles.card, (products.brand === 'NIKE') ? styles.nike : styles.adidas]}
 
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('Details', products)}>
+                onPress={() => navigation.navigate('Detailstack', products)}>
 
                 <View style={{ height: 210, alignItems: 'center' }}>
                     <Image
@@ -92,17 +93,19 @@ const SearchScreen = ({ navigation }) => {
                         value={searchText}
                         autoFocus={true}
                         placeholder="Search Sneakers ..."
-                        style={{ paddingLeft: 15, fontSize: 15, width: '82%', fontWeight: '400' }}
+                        style={{ paddingLeft: 15, fontSize: 15, width: '77%', fontWeight: '400' }}
                     />
                     {searchText !== '' ? (
-                        <TouchableOpacity onPress={handleClearSearch}>
-                            <MaterialIcons name='close' size={23} color='#616161' />
-                        </TouchableOpacity>
+                        <IconButton
+                            icon={() => <MaterialIcons name="close" size={20} color="black" />}
+                            size={12}
+                            onPress={handleClearSearch}
+                        />
                     ) : null}
                 </View>
             </View>
 
-            <Animated.View style={{ opacity: fadeAnim, flex: 1, paddingHorizontal: 25, }}>
+            <Animated.View style={{ opacity: fadeAnim, flex: 1, paddingHorizontal: 10, }}>
                 <ScrollView
                     contentContainerStyle={{ marginTop: 30, flexDirection: 'row', flexWrap: 'wrap' }}>
                     {filteredProducts.map((item, i) => <Card style={{ width: '50%' }} key={i} products={item} />)}
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
         height: 225,
         backgroundColor: '#f6f6f6',
         width,
-        marginHorizontal: 2,
+        marginHorizontal: 5,
         borderRadius: 10,
         marginBottom: 80,
         padding: 15,

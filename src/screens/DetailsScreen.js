@@ -2,9 +2,12 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import { View, SafeAreaView, Image, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import Stars from 'react-native-stars';
+import { Button } from 'react-native-elements';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
+import { IconButton } from 'react-native-paper';
+
 
 const DetailsScreen = ({ navigation, route }) => {
 
@@ -64,18 +67,22 @@ const DetailsScreen = ({ navigation, route }) => {
   const [iconName, setIconName] = useState("bookmark-border");
 
   return (
-    <SafeAreaView style={[{ flex: 1, paddingTop: 20 }, (products.brand === 'NIKE') ? style.nike : style.adidas]}>
+    <SafeAreaView style={[{ flex: 1, paddingTop: 10 }, (products.brand === 'NIKE') ? style.nike : style.adidas]}>
       <View>
         <StatusBar backgroundColor={(products.brand === 'NIKE') ? '#f6f6f6' : '#eceef0'} barStyle="dark-content" />
       </View>
 
       <View style={style.header}>
-        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.goBack()} >
-          <View><MaterialIcons name="arrow-back" size={28} /></View>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Bag', products)}>
-          <MaterialIcons name="shopping-cart" size={28} />
-        </TouchableOpacity>
+        <IconButton
+          icon={() => <MaterialIcons name="arrow-back" size={28} color="black" />}
+          size={28}
+          onPress={() => navigation.goBack()}
+        />
+        <IconButton
+          icon={() => <MaterialIcons name="shopping-cart" size={28} color="black" />}
+          size={28}
+          onPress={() => navigation.navigate('Bagstack')}
+        />
       </View>
 
       <ScrollView>
@@ -84,9 +91,9 @@ const DetailsScreen = ({ navigation, route }) => {
           <Swiper
             style={style.wrapper}
             paginationStyle={{ bottom: 0 }}
-            dotStyle={{ backgroundColor: "#000", borderColor: "#000", borderWidth: 1, width: 10, height: 10, borderRadius: 10 }}
-            activeDotColor="#FFF"
-            activeDotStyle={{ borderColor: "#000", borderWidth: 1, width: 10, height: 10, borderRadius: 10 }}>
+            dotStyle={{ backgroundColor: "white", borderColor: "black", borderWidth: 1, width: 10, height: 10, borderRadius: 10 }}
+            activeDotColor="black"
+            activeDotStyle={{ borderColor: "black", borderWidth: 1, width: 10, height: 10, borderRadius: 10 }}>
             <View style={style.slide}>
               <Image
                 source={products.img1}
@@ -108,10 +115,16 @@ const DetailsScreen = ({ navigation, route }) => {
           </Swiper>
         </View>
 
-        <View style={{ alignItems: 'flex-end', paddingRight: 20 }}>
+        <View style={{ alignItems: 'flex-end', marginRight: 7 }}>
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity><MaterialCommunityIcons style={{ marginRight: 10 }} name='share' size={30} /></TouchableOpacity>
-            <TouchableOpacity
+            <IconButton
+              icon={() => <MaterialCommunityIcons name="share" size={30} color="black" />}
+              size={30}
+              onPress={() => undefined}
+            />
+            <IconButton
+              icon={() => <MaterialIcons name={iconName} size={30} color="black" />}
+              size={30}
               onPress={() => {
                 if (iconName == "bookmark-border") {
                   setIconName("bookmark")
@@ -121,10 +134,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 }
               }
               }
-              style={{ width: 30, height: 30, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}>
-              <MaterialIcons name={iconName} size={30} />
-            </TouchableOpacity>
-
+            />
           </View>
         </View>
 
@@ -160,33 +170,28 @@ const DetailsScreen = ({ navigation, route }) => {
           {sizes.map((item, i) => <SizeButton key={i} size={item} />)}
         </View>
 
-        <View style={style.detailsContainer}>
+        <View style={{ marginBottom: 10, paddingTop: 10, }}>
           <View style={{ paddingHorizontal: 20 }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Description</Text>
 
-            <ScrollView style={{ minHeight: 210 }}>
-              <Text style={{ color: 'grey', fontSize: 16, lineHeight: 22, marginTop: 10, marginBottom: 10 }}>
-                {products.about}
-              </Text>
-            </ScrollView>
+            <Text style={{ color: 'grey', fontSize: 16, lineHeight: 22, marginTop: 10, marginBottom: 10 }}>
+              {products.about}
+            </Text>
           </View>
         </View>
 
       </ScrollView>
 
-      <TouchableOpacity style={{ margin: 20, marginBottom: 10 }} activeOpacity={0.8}>
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: "#000", flexDirection: "row", alignItems: "center", justifyContent: "center", borderRadius: 10, padding: 15 }}>
-          <MaterialIcons name='add-shopping-cart' color='white' size={23} />
-          <Text style={{ fontSize: 20, color: "#FFF", fontWeight: "bold", marginHorizontal: 15, }}>Add to Cart</Text>
-        </View>
-      </TouchableOpacity>
+      <Button
+        buttonStyle={{ backgroundColor: 'black', margin: 20, borderRadius: 20, paddingVertical: 15, marginTop: 0 }}
+        title="ADD TO CART " titleStyle={{ fontSize: 12 }}
+        icon={<MaterialIcons name='add-shopping-cart' color='white' size={15} />} iconRight />
 
     </SafeAreaView>
   );
 };
 
 const style = StyleSheet.create({
-  wrapper: {},
   slide: {
     flex: 1,
     justifyContent: "center",
@@ -200,7 +205,7 @@ const style = StyleSheet.create({
     backgroundColor: '#f6f6f6'
   },
   header: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -219,14 +224,6 @@ const style = StyleSheet.create({
   },
   unselected: {
     backgroundColor: '#DADADA'
-  },
-  detailsContainer: {
-    flex: 0.55,
-    marginHorizontal: 2,
-    minHeight: 250,
-    borderRadius: 20,
-    marginBottom: 50,
-    paddingTop: 10,
   },
 });
 
