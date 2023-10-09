@@ -9,32 +9,15 @@ import { signInWithEmailAndPassword } from '@firebase/auth';
 import { auth } from '../firebaseConfig';
 
 
-const LogIn = () => {
+const LogInScreen = () => {
 
-    useEffect(() => {
-        navigation.getParent()?.setOptions({
-            tabBarStyle: {
-                display: "none",
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                elevation: 0,
-                height: 0,
-            }
-        });
-        return () => navigation.getParent()?.setOptions({
-            tabBarStyle: undefined
-        });
-    }, [navigation]);
+    const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [eye, setEye] = useState(true);
     const [eyename, setEyeName] = useState('eye');
-
-    const navigation = useNavigation();
 
     const handleLogin = async () => {
         try {
@@ -45,10 +28,13 @@ const LogIn = () => {
                     index: 0,
                     routes: [{ name: 'Home' }],
                 });
+                navigation.navigate('HomeStack');
             } else {
                 setErrorMessage('Please verify your email address to continue.');
             }
         } catch (error) {
+            console.log('ghritakjyotikalita@gmail.com')
+            console.log(error)
             if (error.code === 'auth/user-not-found') {
                 setErrorMessage('No user found with this email. please create an account.');
             } else if (error.code == 'auth/invalid-email') {
@@ -76,8 +62,6 @@ const LogIn = () => {
         }
     };
 
-
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
@@ -94,7 +78,7 @@ const LogIn = () => {
                     </View>
                     <View style={{ flexDirection: 'row', marginLeft: 50, marginTop: 25 }}>
                         <Text style={{ color: '#9b9b9b', fontWeight: '500' }}>If you are new / </Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Registerstack')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                             <Text style={{ fontWeight: '500' }} >Create New</Text>
                         </TouchableOpacity>
                     </View>
@@ -196,4 +180,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LogIn;
+export default LogInScreen;

@@ -4,10 +4,11 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-elements';
 import { MaterialIcons, Octicons, Ionicons } from '@expo/vector-icons';
-// const { width, height } = Dimensions.get('window');
+import { useNavigation } from '@react-navigation/native';
 const scaleValue = new Animated.Value(0);
 
-const AccountScreen = ({ navigation }) => {
+const AccountScreen = () => {
+    const navigation = useNavigation();
 
     const [modalVisible, setModalVisible] = useState(false);
     const [name, setName] = useState('Ghritak Jyoti Kalita');
@@ -93,6 +94,10 @@ const AccountScreen = ({ navigation }) => {
         );
     };
 
+    const handleLogOut = () => {
+        navigation.navigate('Login');
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, paddingTop: 10, backgroundColor: 'white' }}>
             <View>
@@ -113,10 +118,7 @@ const AccountScreen = ({ navigation }) => {
                         <Text style={{ fontSize: 25, fontWeight: '600', marginTop: 20 }}>{name}</Text>
                         <Text style={{ fontSize: 15, marginTop: 7 }}>{email}</Text>
                         <Text style={{ fontSize: 15, marginTop: 7 }}>+91 7002031369</Text>
-                        {/* <TouchableOpacity onPress={openModal} style={{ marginBottom: 20, flexDirection: 'row', backgroundColor: '#eceef0', paddingVertical: 10, paddingHorizontal: 15, borderRadius: 5, marginTop: 12 }}>
-                            <Text style={{ fontSize: 12 }}>EDIT PROFILE</Text>
-                            <MaterialIcons size={15} style={{ justifyContent: 'center', marginLeft: 3 }} name='edit' />
-                        </TouchableOpacity> */}
+
                         <View style={{ marginTop: 20, marginBottom: 12 }}>
                             <Button onPress={openModal}
                                 title='EDIT PROFILE  '
@@ -133,7 +135,7 @@ const AccountScreen = ({ navigation }) => {
                     <Modal visible={modalVisible} transparent={true}>
                         <View style={styles.modalContainer}>
                             <Animated.View style={[styles.modalContent, { transform: [{ scale: scaleValue }] }]}>
-                                <View style={{ marginTop: 20 }}>
+                                <View style={{ marginTop: 20, justifyContent: 'center', flexDirection: 'column' }}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
                                         <Text style={{ width: '20%' }}>Name :</Text>
                                         <TextInput onChangeText={nameSearch} value={name} style={styles.modal_input} />
@@ -157,15 +159,18 @@ const AccountScreen = ({ navigation }) => {
                                             buttonStyle={{ backgroundColor: '#eceef19e', borderWidth: 1, borderRadius: 5, borderColor: 'black', justifyContent: 'center', paddingVertical: 10, }}
                                             title="Change Password" titleStyle={{ color: 'black', fontSize: 12 }} />
                                     </View>
-                                    <Button onPress={saveModal}
-                                        buttonStyle={{ backgroundColor: 'black', borderRadius: 10, paddingVertical: 15 }}
-                                        title="SAVE " titleStyle={{ fontSize: 16 }} />
-                                    <Button onPress={closeModal}
-                                        buttonStyle={{ backgroundColor: '#3d4147', marginTop: 15, borderRadius: 10, paddingVertical: 15 }}
-                                        title="CANCEL " titleStyle={{ fontSize: 16 }} />
+                                    <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+                                        <Button onPress={saveModal}
+                                            buttonStyle={{ backgroundColor: 'black', borderRadius: 10, paddingVertical: 15, justifyContent: 'center', paddingHorizontal: 87 }}
+                                            title="SAVE " titleStyle={{ fontSize: 16 }} />
+                                    </View>
+                                    <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+                                        <Button onPress={closeModal}
+                                            buttonStyle={{ backgroundColor: '#3d4147', marginTop: 15, borderRadius: 10, paddingVertical: 15, paddingHorizontal: 75 }}
+                                            title="CANCEL " titleStyle={{ fontSize: 16 }} />
+                                    </View>
                                 </View>
                             </Animated.View>
-
                         </View>
                     </Modal>
                 </View>
@@ -274,7 +279,7 @@ const AccountScreen = ({ navigation }) => {
                 </View>
 
                 <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 30 }}>
-                    <Button onPress={() => navigation.navigate('Loginstack')}
+                    <Button onPress={handleLogOut}
                         title='Log Out '
                         buttonStyle={{ backgroundColor: 'black', color: 'black', height: 50, borderRadius: 10 }}
                         containerStyle={{ width: '75%' }}
@@ -307,8 +312,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         backgroundColor: 'white',
         paddingHorizontal: 20,
-        borderRadius: 10,
-        width: '80%',
+        borderRadius: 15,
+        width: '90%',
         height: Platform.OS === "ios" ? 430 : 460,
         // height: '50%',
     },

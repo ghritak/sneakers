@@ -61,7 +61,7 @@ const BagScreen = ({ navigation }) => {
                     <View style={{}}>
                         <IconButton
                             icon={() => <MaterialIcons name="delete-outline" size={18} color="#646464" />}
-                            size={16}
+                            size={18}
                             onPress={() => undefined}
                         />
                     </View>
@@ -179,7 +179,7 @@ const BagScreen = ({ navigation }) => {
             </ScrollView>
 
             <Button
-                buttonStyle={{ backgroundColor: 'black', margin: 20, marginTop: 0, borderRadius: 20, paddingVertical: 15 }}
+                buttonStyle={[{ backgroundColor: 'black', marginHorizontal: 20, borderRadius: 20, paddingVertical: 15 }, Platform.OS === 'ios' ? { marginBottom: 0 } : { marginBottom: 10 }]}
                 title="CHECKOUT "
                 titleStyle={{ fontSize: 12 }}
                 icon={<MaterialIcons name='arrow-forward' color='white' size={15} />}

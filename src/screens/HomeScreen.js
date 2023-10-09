@@ -4,14 +4,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, SafeAreaVi
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import { IconButton } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import products from '../data/products';
 const width = Dimensions.get('window').width / 2 - 20;
 
-const HomeScreen = ({ navigation }) => {
-
-  // useEffect(() => {
-  //   SplashScreen.show(navigation);
-  // }, []);
+const HomeScreen = () => {
 
   const Card = ({ products }) => {
     return (
@@ -19,7 +16,7 @@ const HomeScreen = ({ navigation }) => {
         style={[style.card, (products.brand === 'NIKE') ? style.nike : style.adidas]}
 
         activeOpacity={0.5}
-        onPress={() => navigation.navigate('Detailstack', products)}>
+        onPress={() => navigation.navigate('Details', products)}>
 
         <View style={{ height: 210, width: 144, alignItems: 'center' }}>
           <Image
@@ -53,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => navigation.navigate('Detailstack', products)}
+        onPress={() => navigation.navigate('Details', products)}
         style={{ marginTop: 30, backgroundColor: "#FFF", height: 250, width: 200, zIndex: 2, borderRadius: 10, padding: 10, marginBottom: 5 }}>
         <Image
           source={products.img1}
@@ -83,8 +80,8 @@ const HomeScreen = ({ navigation }) => {
       </TouchableOpacity>
     );
   };
-
-  const { user } = useContext(UserContext);
+  const navigation = useNavigation();
+  // const { user } = useContext(UserContext);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -108,7 +105,7 @@ const HomeScreen = ({ navigation }) => {
             icon={() => <MaterialIcons name="shopping-cart" size={25} color="black" />}
             size={25}
             style={{ margin: 0 }}
-            onPress={() => navigation.navigate('Bagstack')}
+            onPress={() => navigation.navigate('Bag')}
           />
         </View>
 

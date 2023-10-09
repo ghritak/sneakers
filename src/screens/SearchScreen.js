@@ -4,10 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { IconButton } from 'react-native-paper';
 import products from "../data/products";
+import { useNavigation } from "@react-navigation/native";
 const width = Dimensions.get('window').width / 2 - 20;
 
 
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = () => {
+    const navigation = useNavigation();
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [searchText, setSearchText] = useState('');
@@ -46,7 +48,7 @@ const SearchScreen = ({ navigation }) => {
                 style={[styles.card, (products.brand === 'NIKE') ? styles.nike : styles.adidas]}
 
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('Detailstack', products)}>
+                onPress={() => navigation.navigate('Details', products)}>
 
                 <View style={{ height: 210, alignItems: 'center' }}>
                     <Image
@@ -98,7 +100,7 @@ const SearchScreen = ({ navigation }) => {
                     {searchText !== '' ? (
                         <IconButton
                             icon={() => <MaterialIcons name="close" size={20} color="black" />}
-                            size={12}
+                            size={16}
                             onPress={handleClearSearch}
                         />
                     ) : null}

@@ -1,19 +1,22 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, StatusBar, Dimensions } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import products from "../data/products";
 
 const width = Dimensions.get('window').width / 2 - 20;
 
-const BookmarkScreen = ({ navigation }) => {
+const BookmarkScreen = () => {
+    const navigation = useNavigation();
+
     const Card = ({ products }) => {
         return (
             <TouchableOpacity
                 style={[style.card, (products.brand === 'NIKE') ? style.nike : style.adidas]}
 
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('Detailstack', products)}>
+                onPress={() => navigation.navigate('Details', products)}>
 
                 <View style={{ height: 210, alignItems: 'center' }}>
                     <Image
@@ -57,7 +60,7 @@ const BookmarkScreen = ({ navigation }) => {
                     </Text>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Bagstack', products)}
+                    onPress={() => navigation.navigate('Bag', products)}
                     style={{ marginRight: 10 }}
                     activeOpacity={0.5}>
                     <MaterialIcons name="shopping-cart" size={25} />
