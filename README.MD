@@ -14,7 +14,9 @@ Sneakers is a React Native mobile application designed to offer users a convenie
 
 ## Screenshots
 
-<p float='left'>
+<img src="src/images/template/sneakers.png">
+
+<!-- <p float='left'>
   <img style="padding: 20px" src="src/images/template/1.png" width="200">
   <img style="padding: 20px" src="src/images/template/2.png" width="200">
   <img style="padding: 20px" src="src/images/template/3.png" width="200">
@@ -28,7 +30,7 @@ Sneakers is a React Native mobile application designed to offer users a convenie
 </p>
 <p float='left'>
   <img style="padding: 20px" src="src/images/template/9.png" width="200">
-</p>
+</p> -->
 
 ## Getting Started
 
@@ -42,4 +44,4 @@ To run the app locally:
 
 ## Contact
 
-For questions or feedback, feel free to reach out to us at [ghritakjyotikalita@gmail.com].
+For questions or feedback, feel free to reach out to us at [Email](mailto:ghritakjyotikalita@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/ghritak-jyoti-kalita-a1915415a/).
