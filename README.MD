@@ -14,7 +14,7 @@ Sneakers is a React Native mobile application designed to offer users a convenie
 
 ## Screenshots
 
-<img src="src/images/template/sneakers.png">
+<img style="border-radius: 4px" src="src/images/template/sneakers.png">
 
 <!-- <p float='left'>
   <img style="padding: 20px" src="src/images/template/1.png" width="200">
